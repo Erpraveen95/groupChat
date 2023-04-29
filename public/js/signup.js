@@ -18,7 +18,14 @@ async function onSubmit(e) {
         }
         const serverResponse = await axios.post("http://localhost:3000/signup", userData);
         console.log(serverResponse)
+        if (serverResponse.data.status === "success") {
+            alert("Signup Successfull")
+        } else {
+            console.log(serverResponse.response.data.message)
+
+        }
     } catch (error) {
         console.log(error)
+        alert(`${error.response.data.message}`)
     }
 }
