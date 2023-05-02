@@ -42,6 +42,8 @@ exports.signup = async (req, res) => {
 function generateWebToken(id, name) {
     return jwt.sign({ userId: id, name }, "secretkey")
 }
+
+
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body
@@ -49,7 +51,7 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: "Bad Parameters", success: "false" })
         }
         const user = await User.findOne({ where: { email: email } })
-        console.log(user)
+        //console.log(user)
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
                 if (result === true) {

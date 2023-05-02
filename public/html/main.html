@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WhatsChat</title>
     <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.3/axios.min.js"></script>
   </head>
   <body>
     <div class="chatbox">
@@ -15,15 +16,25 @@
           <span>John:</span>
           <p>Hello, how can I help you?</p>
         </div>
-        <div class="chatbox-message sent">
+        <div class="chatbox-message sent" id="chatbox-message-sent">
           <span>You:</span>
           <p>Hi, I have a question about your product.</p>
         </div>
       </div>
-      <div class="chatbox-input">
-        <input type="text" placeholder="Type your message..." />
-        <button>Send</button>
+      <div>
+        <form id="form">
+          <div class="chatbox-input">
+            <input
+              type="text"
+              placeholder="Type your message..."
+              id="new-message"
+              required
+            />
+            <button>Send</button>
+          </div>
+        </form>
       </div>
     </div>
   </body>
+  <script src="../js/main.js"></script>
 </html>

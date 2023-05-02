@@ -12,7 +12,10 @@ async function login(e) {
             password: passwordInput.value
         }
         const serverResponse = await axios.post("http://localhost:3000/login", loginCredentials)
-        console.log(serverResponse)
+        if (serverResponse.data.success === "true") {
+            localStorage.setItem("token", serverResponse.data.token)
+            window.location.href = "../html/main.html"
+        }
     } catch (error) {
         console.log(error)
     }
