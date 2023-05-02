@@ -15,3 +15,13 @@ exports.postChat = async (req, res) => {
         res.status(500).json({ success: "false", error })
     }
 }
+
+exports.getAllChat = async (req, res) => {
+    try {
+        const user = req.user
+        const chat = await Messages.findAll({ where: { userId: user.id } })
+        res.status(200).json({ message: "fetch success", chat })
+    } catch (error) {
+        res.status(500).json({ success: "false", message: "chat fetch error" })
+    }
+}

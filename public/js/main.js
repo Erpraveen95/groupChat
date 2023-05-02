@@ -7,6 +7,19 @@ const chatList = document.querySelector('.chatbox-messages')
 
 form.addEventListener("submit", sendChat)
 
+window.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const token = localStorage.getItem("token")
+        const getAllChat = await axios.get("http://localhost:3000/chat/getchat",
+            { headers: { "Authorization": token } })
+
+        getAllChat.data.chat.forEach(element => {
+            updateChatList(element.message)
+        });
+    } catch (err) {
+        console.log(err)
+    }
+})
 async function sendChat(e) {
     try {
         e.preventDefault()
@@ -16,7 +29,7 @@ async function sendChat(e) {
         const token = localStorage.getItem("token")
         const serverResponse = await axios.post("http://localhost:3000/chat/sendmessage",
             newMessage,
-            { headers: { Authorization: token } })
+            { headers: { "Authorization": token } })
         console.log(serverResponse.data.message)
         updateChatList(serverResponse.data.message)
     } catch (error) {
