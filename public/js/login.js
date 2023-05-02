@@ -14,6 +14,6 @@ async function login(e) {
         const serverResponse = await axios.post("http://localhost:3000/login", loginCredentials)
         console.log(serverResponse)
     } catch (error) {
-        console.log(err)
+        console.log(error)
     }
 }
