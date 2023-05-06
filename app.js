@@ -5,24 +5,33 @@ const bodyParser = require("body-parser")
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
+const sequelize = require("./util/database")
 
 const User = require("./models/user")
-const Messages = require('./models/message')
+const Group = require("./models/group")
+const Message = require('./models/message')
+const GroupUser = require("./models/groupUser")
 
-const sequelize = require("./util/database")
 const signupRoutes = require("./routes/signup")
 const chatRoutes = require("./routes/chatRoutes")
+const groupRoutes = require("./routes/groupRoutes")
+const adminRoutes = require("./routes/adminRoutes")
 
+User.hasMany(Message)
+Message.belongsTo(User)
+Group.belongsToMany(User, { through: GroupUser })
+User.belongsToMany(Group, { through: GroupUser })
+Group.hasMany(Message)
+Message.belongsTo(Group)
 
 app.use(signupRoutes)
 app.use("/chat", chatRoutes)
-
-User.hasMany(Messages)
-Messages.belongsTo(User)
+app.use("/groups", groupRoutes)
+app.use(adminRoutes)
 
 sequelize
     .sync()
-    //.sync({ force: true })
+    // .sync({ force: true })
     .then(() => {
         console.log("db connected")
         app.listen(3000, () => {

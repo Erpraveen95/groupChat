@@ -1,13 +1,26 @@
 body {
   font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  padding: 5 5 5 5;
+}
+
+.groups {
+  width: 30%;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .chatbox {
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 70%;
   padding: 10px;
-  max-width: 400px;
-  margin: auto;
+  box-sizing: border-box;
 }
 
 .chatbox-header {
@@ -16,7 +29,7 @@ body {
 }
 
 .chatbox-messages {
-  height: 200px;
+  height: calc(100% - 70px);
   overflow-y: scroll;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -36,6 +49,7 @@ body {
 
 .chatbox-input button {
   margin-left: 10px;
+  margin-top: 5px;
   border: none;
   border-radius: 5px;
   padding: 5px;
@@ -60,7 +74,7 @@ body {
   padding: 5px;
   border-radius: 5px;
   background-color: #f2f2f2;
-  max-width: 300px;
+  max-width: 500px;
   align-self: flex-start;
 }
 
@@ -74,10 +88,133 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  word-wrap: break-word;
 }
 
 .chatbox-message.sent span {
   font-weight: bold;
   margin-bottom: 5px;
   align-self: flex-end;
+}
+.group-container {
+  width: 30%;
+  height: 100%;
+  background-color: #f2f2f2;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.group-container h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.group-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.group-container li {
+  display: flex; /* use flexbox layout */
+  justify-content: space-between; /* space elements out */
+  align-items: center; /* vertically center elements */
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-container li:hover {
+  background-color: #f2f2f2;
+}
+
+.group-container li .btn-small {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #ea1818;
+  color: #0d0c0c;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.group-container li .btn-small:hover {
+  background-color: #aaa; /* change background color on hover */
+}
+
+.group-container button {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-container button:hover {
+  background-color: #3e8e41;
+}
+.add-member-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.add-member-btn button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-member-btn button:hover {
+  background-color: #3e8e41;
+}
+#current-user {
+  margin-right: 10px;
+}
+
+#logout-btn {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: fit-content;
+  margin-left: auto;
+}
+
+.logout {
+  padding: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.logout span {
+  font-weight: bold;
+  margin-right: 10px;
 }
