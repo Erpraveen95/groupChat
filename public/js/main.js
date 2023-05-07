@@ -4,10 +4,30 @@ const messageDisplay = document.getElementById("new-message-display")
 const chatList = document.querySelector('.chatbox-messages')
 const createGroup = document.getElementById("create-group-btn")
 const groupList = document.getElementById("group-list")
+
 const addMemberBtn = document.getElementById("add-member")
 const logOut = document.getElementById("logout-btn")
 const username = document.getElementById("current-user")
+const showMemberBtn = document.getElementById("show-members")
+const membersContainer = document.querySelector('.members-container');
+const memberListUl = document.querySelector(".members-list")
+const chatbox = document.querySelector('.chatbox');
+const groupContainer = document.querySelector('.group-container');
 
+showMemberBtn.addEventListener("click", async () => {
+    membersContainer.classList.toggle('show');
+    groupContainer.classList.toggle('resized');
+    chatbox.classList.toggle('resized');
+    if (membersContainer.classList.contains('show')) {
+        groupContainer.style.width = 'calc(30% - 50px)';
+        chatbox.style.width = 'calc(70% - 250px)';
+    } else {
+        groupContainer.style.width = '30%';
+        chatbox.style.width = '70%';
+    }
+    const activeGroup = localStorage.getItem("activeGroup")
+    fetchAndShowMembers(activeGroup)
+})
 form.addEventListener("submit", sendChat)
 
 createGroup.addEventListener("click", () => {
@@ -32,13 +52,14 @@ groupList.addEventListener("click", (e) => {
         localStorage.setItem("activeGroup", `${groupId}`)
     }
     let intervalId = setInterval(() => {
-        fetchChatAndShow(groupId, intervalId);
+        fetchAndShowChat(groupId, intervalId);
     }, 1000);
 })
 
 window.addEventListener("DOMContentLoaded", async () => {
     try {
         displayGroupOnLoad();
+        username.textContent = localStorage.getItem("username")
     } catch (err) {
         console.log(err)
     }
@@ -80,7 +101,7 @@ function updateChatList(message, from) {
     chatList.appendChild(newMessageEl)
 }
 
-async function fetchChatAndShow(groupId, intervalId) {
+async function fetchAndShowChat(groupId, intervalId) {
     localStorage.setItem("intervalId", intervalId);
     let oldText = JSON.parse(localStorage.getItem("messages"));
     let lastMsgId = localStorage.getItem("lastChatId");
@@ -119,16 +140,17 @@ async function displayGroupOnLoad() {
         const serverResponse = await axios.get(`http://localhost:3000/groups/getAllGroups`,
             { headers: { "Authorization": token } });
 
-        username.textContent = serverResponse.data.username
+        localStorage.setItem("username", serverResponse.data.username)
         groupList.innerHTML = "";
 
         const groupName = serverResponse.data.groups;
-
-        groupName.forEach((group) => {
-            groupList.innerHTML += `
+        if (groupName) {
+            groupName.forEach((group) => {
+                groupList.innerHTML += `
              <li id=${group.id}>${group.name}<button class="del btn-small">X</button></li>
              `
-        });
+            });
+        }
     } catch (error) {
         console.log(error)
     }
@@ -136,7 +158,126 @@ async function displayGroupOnLoad() {
 
 logOut.addEventListener("click", () => {
     localStorage.removeItem("token")
-    localStorage.removeItem("messages")
-    localStorage.removeItem("activeGroup")
+        .removeItem("messages")
+        .removeItem("activeGroup")
+        .removeItem("username");
     window.location.href = "loginPage.html"
 })
+async function deleteGroup(groupId) {
+    try {
+        console.log(groupId)
+        const token = localStorage.getItem("token")
+        const deleteResponse = await axios.delete(`http://localhost:3000/deletegroup/${groupId}`,
+            { headers: { "Authorization": token } })
+        console.log(deleteResponse)
+        alert(deleteResponse.data.message)
+        if (deleteResponse.data.success == "true") {
+            displayGroupOnLoad()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function fetchAndShowMembers(activeGroup) {
+    try {
+        const token = localStorage.getItem("token")
+        const getMembersResponse = await axios.get(`http://localhost:3000/admin/getAllMembers/${activeGroup}`,
+            { headers: { "Authorization": token } }
+        )
+        console.log(getMembersResponse.data.members)
+        updateMemberList(getMembersResponse.data.members);
+    } catch (error) {
+        console.log(err)
+    }
+}
+function updateMemberList(members) {
+    memberListUl.addEventListener("click", (e) => handleMembers(e))
+    memberListUl.innerHTML = ""
+    members.forEach(member => {
+        if (member.isAdmin) {
+            memberListUl.innerHTML += `<li class="admin"><b>Admin</b>${member.dataValues.name}
+                    <div class="edit-box">
+                    <button class="rmadminbtn" id="${member.dataValues.id}">Remove Admin</button>
+                    <button class="rmuserbtn" id="${member.dataValues.id}">Remove User</button>
+                    </div></li>`
+        } else {
+            memberListUl.innerHTML += `<li class="member">
+                    ${member.dataValues.name}
+                    <div class="edit-box">
+                    <button class="makeadminbtn" id="${member.dataValues.id}">Make Admin</button>
+                    <button class="rmuserbtn" id="${member.dataValues.id}">Remove User</button>
+                    </div>
+                </li>`;
+        }
+    })
+}
+function handleMembers(e) {
+    let userId = e.target.id;
+    let name = e.target.className;
+    let token = localStorage.getItem("token");
+    let groupID = localStorage.getItem("activeGroup");
+    // console.log(name, id);
+    if (name == "makeadminbtn") {
+        console.log(userId, groupID);
+        makeAdmin(userId, token, groupID);
+    }
+    if (name == "rmadminbtn") {
+        console.log(userId, groupID);
+        removeAdmin(userId, token, groupID);
+    }
+    if (name == "rmuserbtn") {
+        console.log(userId, groupID);
+        removeUser(userId, token, groupID);
+    }
+}
+async function makeAdmin(userId, token, groupId) {
+    try {
+        let res = await axios.post(
+            "http://localhost:3000/admin/makeAdmin",
+            {
+                groupId,
+                userId,
+            },
+            { headers: { "Authorization": token } }
+        );
+        console.log(res);
+        if (res.status == 200) {
+            fetchAndShowMembers(groupId);
+        }
+        if (res.status == 403) {
+            alert("permission denied");
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function removeAdmin(userId, token, groupId) {
+    try {
+        const removeAdminResponse = await axios.post("http://localhost:3000/admin/removeAdmin", {
+            userId: userId,
+            groupId: groupId
+        },
+            { headers: { "Authorization": token } })
+        console.log(removeAdminResponse)
+        if (removeAdminResponse.status == 200) {
+            fetchAndShowMembers(groupId);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function removeUser(userId, token, groupId) {
+    try {
+        const removeUserResponse = await axios.post("http://localhost:3000/admin/removeUser", {
+            userId: userId,
+            groupId: groupId
+        },
+            { headers: { "Authorization": token } })
+        console.log(removeUserResponse)
+        if (removeUserResponse.status == 200) {
+            fetchAndShowMembers(groupId)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -1,5 +1,4 @@
 const Message = require("../models/message")
-const User = require("../models/user")
 const { Op } = require("sequelize")
 
 exports.postChat = async (req, res) => {

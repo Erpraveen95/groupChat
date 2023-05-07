@@ -19,6 +19,7 @@ body {
 
 .chatbox {
   width: 70%;
+  height: 94%;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -26,6 +27,11 @@ body {
 .chatbox-header {
   font-weight: bold;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
 }
 
 .chatbox-messages {
@@ -170,13 +176,13 @@ body {
 .group-container button:hover {
   background-color: #3e8e41;
 }
-.add-member-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.add-member-btn,
+.show-members-btn {
+  margin-left: auto;
 }
 
-.add-member-btn button {
+.add-member-btn button,
+.show-members-btn button {
   background-color: #4caf50;
   color: #fff;
   border: none;
@@ -184,7 +190,10 @@ body {
   cursor: pointer;
 }
 
-.add-member-btn button:hover {
+.add-member-btn button :hover {
+  background-color: #3e8e41;
+}
+.show-members-btn button:hover {
   background-color: #3e8e41;
 }
 #current-user {
@@ -217,4 +226,79 @@ body {
 .logout span {
   font-weight: bold;
   margin-right: 10px;
+}
+.members-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: #f2f2f2;
+  z-index: 999;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s ease-in-out;
+}
+.members-container.show {
+  right: 0;
+  display: block;
+}
+.members-container.show ~ .group-container,
+.members-container.show ~ .chatbox {
+  width: calc(35% - 20px);
+  transition: width 0.3s ease-in-out;
+}
+.members-container.show ~ .group-container {
+  overflow-y: hidden;
+}
+.members-list li {
+  display: flex; /* use flexbox layout */
+  justify-content: space-between; /* space elements out */
+  align-items: center; /* vertically center elements */
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  width: 100%;
+  flex: 1;
+  transition: background-color 0.3s ease;
+}
+.members-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+}
+.admin {
+  color: red;
+}
+
+.edit-box {
+  display: none;
+}
+
+.member:hover .edit-box,
+.admin:hover .edit-box {
+  display: flex;
+  flex-direction: column;
+}
+.members-list li button {
+  background-color: #4caf50; /* green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.members-list li button:hover {
+  background-color: #3e8e41; /* darker green */
 }
