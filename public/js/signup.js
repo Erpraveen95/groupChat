@@ -3,8 +3,8 @@ const emailInput = document.getElementById("email")
 const phoneInput = document.getElementById("phone")
 const passwordInput = document.getElementById("password")
 const form = document.getElementById("form")
+const msg = document.getElementById('msg')
 
-console.log(form)
 form.addEventListener("submit", onSubmit)
 
 async function onSubmit(e) {
@@ -19,13 +19,25 @@ async function onSubmit(e) {
         const serverResponse = await axios.post("http://localhost:3000/signup", userData);
         console.log(serverResponse)
         if (serverResponse.data.status === "success") {
-            alert("Signup Successfull")
+            updateDom(serverResponse.data.message)
+            setTimeout(() => {
+                window.location.href = "loginPage.html"
+            }, 2000)
+
         } else {
+
             console.log(serverResponse.response.data.message)
 
         }
     } catch (error) {
-        console.log(error)
-        alert(`${error.response.data.message}`)
+        console.log(error.response.data.message)
+        updateDom(error.response.data.message)
     }
+}
+
+function updateDom(user) {
+    msg.innerHTML = ""
+    const item = document.createElement('li')
+    item.innerHTML = `<li>${user}</li>`
+    msg.appendChild(item)
 }

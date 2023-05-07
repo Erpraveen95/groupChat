@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
                 if (result === true) {
-                    res.status(200).json({ message: "Login Success", success: "true", token: generateWebToken(user.id, user.name) })
+                    res.status(200).json({ message: "Login Success", success: "true", token: generateWebToken(user.id, user.name), username: user.name })
                 } else {
                     res.status(401).json({ message: "Password is Incorrect", success: "false" })
                 }
@@ -64,6 +64,6 @@ exports.login = async (req, res) => {
             res.status(404).json({ message: "user not found", success: "false" })
         }
     } catch (error) {
-        res.status(500).json({ error: error })
+        res.status(500).json({ error: error, message: "login failed" })
     }
 }

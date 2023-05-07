@@ -58,8 +58,8 @@ groupList.addEventListener("click", (e) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
     try {
-        displayGroupOnLoad();
         username.textContent = localStorage.getItem("username")
+        displayGroupOnLoad();
     } catch (err) {
         console.log(err)
     }
@@ -140,7 +140,6 @@ async function displayGroupOnLoad() {
         const serverResponse = await axios.get(`http://localhost:3000/groups/getAllGroups`,
             { headers: { "Authorization": token } });
 
-        localStorage.setItem("username", serverResponse.data.username)
         groupList.innerHTML = "";
 
         const groupName = serverResponse.data.groups;
@@ -158,9 +157,9 @@ async function displayGroupOnLoad() {
 
 logOut.addEventListener("click", () => {
     localStorage.removeItem("token")
-        .removeItem("messages")
-        .removeItem("activeGroup")
-        .removeItem("username");
+    localStorage.removeItem("messages")
+    localStorage.removeItem("activeGroup")
+    localStorage.removeItem("username");
     window.location.href = "loginPage.html"
 })
 async function deleteGroup(groupId) {
