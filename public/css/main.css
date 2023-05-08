@@ -22,8 +22,11 @@ body {
   height: 94%;
   padding: 10px;
   box-sizing: border-box;
+  display: none;
 }
-
+.visible {
+  display: block;
+}
 .chatbox-header {
   font-weight: bold;
   margin-bottom: 10px;

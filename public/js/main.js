@@ -48,6 +48,8 @@ groupList.addEventListener("click", (e) => {
         return deleteGroup(groupId);
     }
     if (e.target.nodeName == "LI") {
+        const chatbox = document.querySelector(".chatbox");
+        chatbox.classList.add("visible");
         groupId = e.target.id
         localStorage.setItem("activeGroup", `${groupId}`)
     }
