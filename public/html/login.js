@@ -19,14 +19,14 @@ async function login(e) {
             localStorage.setItem("token", serverResponse.data.token)
             localStorage.setItem("username", serverResponse.data.username)
             setTimeout(() => {
-                window.location.href = "../html/main.html"
+                window.location.href = "main.html"
             }, 2000)
         }
     } catch (error) {
         console.log(error.response.data.message)
         updateDom(error.response.data.message)
         const forgotPasswordLink = document.createElement("a")
-        forgotPasswordLink.href = "../html/forgotPassword.html";
+        forgotPasswordLink.href = "forgotPassword.html";
         forgotPasswordLink.textContent = "Forgot Password";
         response.appendChild(forgotPasswordLink);
     }
