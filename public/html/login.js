@@ -13,7 +13,7 @@ async function login(e) {
             email: emailInput.value,
             password: passwordInput.value
         }
-        const serverResponse = await axios.post("http://localhost:3000/login", loginCredentials)
+        const serverResponse = await axios.post("http://65.1.130.175:3000/login", loginCredentials)
         updateDom(serverResponse.data.message)
         if (serverResponse.data.success === "true") {
             localStorage.setItem("token", serverResponse.data.token)

@@ -18,7 +18,7 @@ async function addMember(e) {
         }
         console.log(newMemberData)
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://localhost:3000/admin/addMember",
+        const serverResponse = await axios.post("http://65.1.130.175:3000/admin/addMember",
             newMemberData,
             { headers: { "Authorization": token } })
         if (serverResponse.status === 200) {
