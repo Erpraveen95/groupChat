@@ -6,3 +6,4 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
 })
 
 module.exports = sequelize
+console.log("hi")
