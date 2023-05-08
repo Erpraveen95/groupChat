@@ -16,7 +16,7 @@ async function onSubmit(e) {
             phone: phoneInput.value,
             password: passwordInput.value
         }
-        const serverResponse = await axios.post("http://localhost:3000/signup", userData);
+        const serverResponse = await axios.post("http://65.1.130.175:3000/signup", userData);
         console.log(serverResponse)
         if (serverResponse.data.status === "success") {
             updateDom(serverResponse.data.message)
