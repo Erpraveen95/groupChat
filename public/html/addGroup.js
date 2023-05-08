@@ -18,7 +18,7 @@ async function addGroup(e) {
             description: description.value
         }
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://65.1.130.175:3000/groups/addgroup",
+        const serverResponse = await axios.post("http://localhost:3000/groups/addgroup",
             groupDetails,
             { headers: { "Authorization": token } })
         console.log(serverResponse)

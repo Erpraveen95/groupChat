@@ -36,6 +36,11 @@ app.use("/chat", chatRoutes)
 app.use("/groups", groupRoutes)
 app.use(adminRoutes)
 
+app.use((req, res) => {
+    console.log(req.url)
+    res.sendFile(path.join(__dirname, `public/html/${req.url}`))
+})
+
 sequelize
     .sync()
     // .sync({ force: true })

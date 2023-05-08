@@ -75,7 +75,7 @@ async function sendChat(e) {
             groupId
         }
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://65.1.130.175:3000/chat/sendmessage",
+        const serverResponse = await axios.post("http://localhost:3000/chat/sendmessage",
             newMessage,
             { headers: { "Authorization": token } })
         //updateChatList(serverResponse.data.message)
@@ -116,7 +116,7 @@ async function fetchAndShowChat(groupId, intervalId) {
 
     const token = localStorage.getItem("token")
     const response = await axios.get(
-        `http://65.1.130.175:3000/chat/fetchchat/${lastMsgId}`,
+        `http://localhost:3000/chat/fetchchat/${lastMsgId}`,
         { headers: { "Authorization": token } }
     );
     if (response.status == 200) {
@@ -139,7 +139,7 @@ async function fetchAndShowChat(groupId, intervalId) {
 async function displayGroupOnLoad() {
     try {
         const token = localStorage.getItem("token");
-        const serverResponse = await axios.get(`http://65.1.130.175:3000/groups/getAllGroups`,
+        const serverResponse = await axios.get(`http://localhost:3000/groups/getAllGroups`,
             { headers: { "Authorization": token } });
 
         groupList.innerHTML = "";
@@ -168,7 +168,7 @@ async function deleteGroup(groupId) {
     try {
         console.log(groupId)
         const token = localStorage.getItem("token")
-        const deleteResponse = await axios.delete(`http://65.1.130.175:3000/deletegroup/${groupId}`,
+        const deleteResponse = await axios.delete(`http://localhost:3000/deletegroup/${groupId}`,
             { headers: { "Authorization": token } })
         console.log(deleteResponse)
         alert(deleteResponse.data.message)
@@ -182,7 +182,7 @@ async function deleteGroup(groupId) {
 async function fetchAndShowMembers(activeGroup) {
     try {
         const token = localStorage.getItem("token")
-        const getMembersResponse = await axios.get(`http://65.1.130.175:3000/admin/getAllMembers/${activeGroup}`,
+        const getMembersResponse = await axios.get(`http://localhost:3000/admin/getAllMembers/${activeGroup}`,
             { headers: { "Authorization": token } }
         )
         console.log(getMembersResponse.data.members)
@@ -234,7 +234,7 @@ function handleMembers(e) {
 async function makeAdmin(userId, token, groupId) {
     try {
         let res = await axios.post(
-            "http://65.1.130.175:3000/admin/makeAdmin",
+            "http://localhost:3000/admin/makeAdmin",
             {
                 groupId,
                 userId,
@@ -254,7 +254,7 @@ async function makeAdmin(userId, token, groupId) {
 }
 async function removeAdmin(userId, token, groupId) {
     try {
-        const removeAdminResponse = await axios.post("http://65.1.130.175:3000/admin/removeAdmin", {
+        const removeAdminResponse = await axios.post("http://localhost:3000/admin/removeAdmin", {
             userId: userId,
             groupId: groupId
         },
@@ -269,7 +269,7 @@ async function removeAdmin(userId, token, groupId) {
 }
 async function removeUser(userId, token, groupId) {
     try {
-        const removeUserResponse = await axios.post("http://65.1.130.175:3000/admin/removeUser", {
+        const removeUserResponse = await axios.post("http://localhost:3000/admin/removeUser", {
             userId: userId,
             groupId: groupId
         },
