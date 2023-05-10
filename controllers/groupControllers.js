@@ -35,16 +35,11 @@ exports.deleteGroup = async (req, res) => {
     try {
         const groupId = req.params.id
         const userId = req.user.id
-        console.log(userId, typeof userId)
-        console.log(groupId, "this is group id")
         const group = await Group.findByPk(groupId)
         const groupUser = await GroupUser.findAll({ where: { groupId: groupId } })
-        console.log(group.id, groupUser)
         groupUser.forEach(async (user) => {
-            console.log(user.dataValues.userId, user.dataValues.isAdmin)
             if (user.dataValues.userId === userId &&
                 user.dataValues.isAdmin === true) {
-                console.log("inside true condition")
 
                 const deleteResponse = await Group.destroy({ where: { id: group.id } })
                 res.status(200).json({ message: "delete group success ", success: "true", deleteResponse })

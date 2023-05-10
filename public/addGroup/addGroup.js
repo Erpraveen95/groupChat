@@ -3,6 +3,7 @@ const groupName = document.getElementById("group-name")
 const description = document.getElementById("group-desc")
 const memberEmails = document.getElementById("group-members")
 const closeBtn = document.getElementById("close-btn")
+const url = "http://localhost:3000"
 
 closeBtn.addEventListener("click", () => {
     window.location.href = "../main/main.html"
@@ -18,7 +19,7 @@ async function addGroup(e) {
             description: description.value
         }
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://localhost:3000/groups/addgroup",
+        const serverResponse = await axios.post(`${url}/groups/addgroup`,
             groupDetails,
             { headers: { "Authorization": token } })
         console.log(serverResponse)

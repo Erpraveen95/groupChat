@@ -1,3 +1,4 @@
+const url = "http://localhost:3000"
 const form = document.getElementById("form")
 const messageInput = document.getElementById("new-message")
 const chatList = document.querySelector('.chatbox-messages')
@@ -44,7 +45,7 @@ addMemberBtn.addEventListener("click", () => {
 async function displayGroupOnLoad() {
     try {
         const token = localStorage.getItem("token");
-        const serverResponse = await axios.get(`http://localhost:3000/groups/getAllGroups`,
+        const serverResponse = await axios.get(`${url}/groups/getAllGroups`,
             { headers: { "Authorization": token } });
 
         groupList.innerHTML = "";
@@ -95,7 +96,7 @@ async function sendChat(e) {
             groupId
         }
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://localhost:3000/chat/sendmessage",
+        const serverResponse = await axios.post(`${url}/chat/sendmessage`,
             newMessage,
             { headers: { "Authorization": token } })
         socket.emit("new-chat", serverResponse.data)
@@ -140,7 +141,7 @@ async function fetchAndShowChat(groupId) {
 
     const token = localStorage.getItem("token")
     const response = await axios.get(
-        `http://localhost:3000/chat/fetchchat/${lastMsgId}`,
+        `${url}/chat/fetchchat/${lastMsgId}`,
         { headers: { "Authorization": token } }
     );
     if (response.status == 200) {
@@ -162,17 +163,23 @@ async function fetchAndShowChat(groupId) {
 
 async function deleteGroup(groupId) {
     try {
-        const token = localStorage.getItem("token")
-        const deleteResponse = await axios.delete(`http://localhost:3000/groups/deletegroup/${groupId}`,
-            { headers: { "Authorization": token } })
-        alert(deleteResponse.data.message)
+        const confirmDelete = confirm("Are you sure you want to delete this group?");
+        if (!confirmDelete) {
+            return; // user clicked cancel, do nothing
+        }
+        const token = localStorage.getItem("token");
+        const deleteResponse = await axios.delete(`${url}/groups/deletegroup/${groupId}`,
+            { headers: { "Authorization": token } });
+        alert(deleteResponse.data.message);
         if (deleteResponse.data.success == "true") {
-            displayGroupOnLoad()
+            displayGroupOnLoad();
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        alert(error.response.data.message)
     }
 }
+
 showMemberBtn.addEventListener("click", async () => {
     membersContainer.classList.toggle('show');
     groupContainer.classList.toggle('resized');
@@ -191,7 +198,7 @@ showMemberBtn.addEventListener("click", async () => {
 async function fetchAndShowMembers(activeGroup) {
     try {
         const token = localStorage.getItem("token")
-        const getMembersResponse = await axios.get(`http://localhost:3000/admin/getAllMembers/${activeGroup}`,
+        const getMembersResponse = await axios.get(`${url}/admin/getAllMembers/${activeGroup}`,
             { headers: { "Authorization": token } }
         )
         // console.log(getMembersResponse.data.members)
@@ -240,7 +247,7 @@ function handleMembers(e) {
 async function makeAdmin(userId, token, groupId) {
     try {
         let res = await axios.post(
-            "http://localhost:3000/admin/makeAdmin",
+            `${url}/admin/makeAdmin`,
             {
                 groupId,
                 userId,
@@ -255,11 +262,12 @@ async function makeAdmin(userId, token, groupId) {
         }
     } catch (error) {
         console.log(error)
+        alert(error.response.data.message)
     }
 }
 async function removeAdmin(userId, token, groupId) {
     try {
-        const removeAdminResponse = await axios.post("http://localhost:3000/admin/removeAdmin", {
+        const removeAdminResponse = await axios.post(`${url}/admin/removeAdmin`, {
             userId: userId,
             groupId: groupId
         },
@@ -268,12 +276,13 @@ async function removeAdmin(userId, token, groupId) {
             fetchAndShowMembers(groupId);
         }
     } catch (error) {
+        alert(error.response.data.message)
         console.log(error)
     }
 }
 async function removeUser(userId, token, groupId) {
     try {
-        const removeUserResponse = await axios.post("http://localhost:3000/admin/removeUser", {
+        const removeUserResponse = await axios.post(`${url}/admin/removeUser`, {
             userId: userId,
             groupId: groupId
         },
@@ -283,6 +292,8 @@ async function removeUser(userId, token, groupId) {
         }
     } catch (error) {
         console.log(error)
+        alert(error.response.data.message)
+
     }
 }
 

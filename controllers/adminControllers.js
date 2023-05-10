@@ -7,17 +7,13 @@ exports.addMember = async (req, res) => {
     try {
         const email = req.body.email
         const groupId = req.body.groupId
-        console.log(groupId, typeof groupId, email)
         const user = await User.findOne({ where: { email: email } })
-        console.log(user.id, "addmember user")
         if (!user) {
             return res.status(404).json({ message: "email not registered", success: "false" })
         }
         const group = await Group.findOne({ where: { id: groupId } })
-        console.log(group)
 
         const membercreate = await group.addUser(user, { through: { isAdmin: false } })
-        console.log(membercreate)
         res.status(200).json({ message: "added new user to group ", success: "true" })
 
     } catch (error) {
@@ -60,7 +56,6 @@ exports.getAllMembers = async (req, res) => {
     try {
         const groupId = +req.params.groupId;
         const members = await GroupUser.findAll({ where: { groupId } });
-        // console.log(members);
         const membersToSend = [];
         for (let i = 0; i < members.length; i++) {
             const user = await User.findByPk(members[i].userId);
@@ -143,6 +138,5 @@ exports.removeAdmin = async (req, res) => {
         res.status(200).json({ message: "User removed As Admin" });
     } catch (error) {
         res.status(500).json({ message: "remove admin failed", success: "false" })
-
     }
 }

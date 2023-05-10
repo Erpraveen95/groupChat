@@ -4,6 +4,8 @@ const passwordInput = document.getElementById('password')
 const form = document.getElementById('login-form')
 const msg = document.getElementById("msg-new")
 const response = document.getElementById("response")
+const url = "http://localhost:3000"
+
 form.addEventListener("submit", login)
 
 async function login(e) {
@@ -17,7 +19,7 @@ async function login(e) {
             email: emailInput.value,
             password: passwordInput.value
         }
-        const serverResponse = await axios.post("http://localhost:3000/login", loginCredentials)
+        const serverResponse = await axios.post(`${url}/login`, loginCredentials)
         updateDom(serverResponse.data.message)
         if (serverResponse.data.success === "true") {
             localStorage.setItem("token", serverResponse.data.token)

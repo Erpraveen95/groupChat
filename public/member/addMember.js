@@ -1,7 +1,7 @@
 const form = document.getElementById("my-form")
 const emailInput = document.getElementById("email")
 const closeBtn = document.getElementById("close-btn")
-
+const url = "http://localhost:3000"
 closeBtn.addEventListener("click", () => {
     window.location.href = "../main/main.html"
 })
@@ -18,7 +18,7 @@ async function addMember(e) {
         }
         console.log(newMemberData)
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://localhost:3000/admin/addMember",
+        const serverResponse = await axios.post(`${url}/admin/addMember`,
             newMemberData,
             { headers: { "Authorization": token } })
         if (serverResponse.status === 200) {

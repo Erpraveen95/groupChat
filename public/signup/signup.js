@@ -4,6 +4,7 @@ const phoneInput = document.getElementById("phone")
 const passwordInput = document.getElementById("password")
 const form = document.getElementById("form")
 const msg = document.getElementById('msg')
+const url = "http://localhost:3000"
 
 form.addEventListener("submit", onSubmit)
 
@@ -16,7 +17,7 @@ async function onSubmit(e) {
             phone: phoneInput.value,
             password: passwordInput.value
         }
-        const serverResponse = await axios.post("http://localhost:3000/signup", userData);
+        const serverResponse = await axios.post(`${url}/signup`, userData);
         console.log(serverResponse)
         if (serverResponse.data.status === "success") {
             updateDom(serverResponse.data.message)
