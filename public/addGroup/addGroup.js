@@ -3,7 +3,7 @@ const groupName = document.getElementById("group-name")
 const description = document.getElementById("group-desc")
 const memberEmails = document.getElementById("group-members")
 const closeBtn = document.getElementById("close-btn")
-const url = "http://localhost:3000"
+const url = "https://whatschatappa.onrender.com"
 
 closeBtn.addEventListener("click", () => {
     window.location.href = "../main/main.html"

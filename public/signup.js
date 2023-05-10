@@ -4,7 +4,7 @@ const phoneInput = document.getElementById("phone")
 const passwordInput = document.getElementById("password")
 const form = document.getElementById("form")
 const msg = document.getElementById('msg')
-const url = "http://localhost:3000"
+const url = "https://whatschatappa.onrender.com"
 
 form.addEventListener("submit", onSubmit)
 
