@@ -35,12 +35,11 @@ exports.signup = async (req, res) => {
             res.status(200).json({ message: "User created", status: "success" })
         })
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: error })
     }
 }
 function generateWebToken(id, name) {
-    return jwt.sign({ userId: id, name }, "secretkey")
+    return jwt.sign({ userId: id, name }, process.env.JWT_SECRET)
 }
 
 
@@ -51,7 +50,6 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: "Bad Parameters", success: "false" })
         }
         const user = await User.findOne({ where: { email: email } })
-        //console.log(user)
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
                 if (result === true) {

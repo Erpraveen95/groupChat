@@ -5,7 +5,8 @@ require('dotenv').config()
 const path = require("path")
 const http = require('http')
 const socketIO = require('socket.io')
-
+const morgan = require("morgan")
+const fs = require("fs")
 
 const app = express()
 app.use(cors())
@@ -20,7 +21,8 @@ const io = socketIO(server, {
         credentials: true
     }
 })
-
+const accessLogStream = fs.createWriteStream('access.log', { flags: 'a' })
+app.use(morgan('combined', { stream: accessLogStream }))
 
 const sequelize = require("./util/database")
 
@@ -52,10 +54,7 @@ app.use("/chat", chatRoutes)
 app.use("/groups", groupRoutes)
 app.use(adminRoutes)
 
-// app.use((req, res) => {
-//     console.log(req.url)
-//     res.sendFile(path.join(__dirname, `public/html/${req.url}`))
-// })
+
 app.use((req, res) => {
     let url = req.url
     res.header('Content-Security-Policy', "img-src 'self'");
@@ -78,7 +77,7 @@ sequelize
     // .sync({ force: true })
     .then(() => {
         console.log("db connected")
-        server.listen(process.env.PORT, () => {
+        server.listen(process.env.PORT || 3000, () => {
             console.log(`server started on port ${process.env.PORT}`)
         })
     })

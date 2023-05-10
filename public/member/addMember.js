@@ -16,7 +16,6 @@ async function addMember(e) {
             email: emailInput.value,
             groupId: groupId
         }
-        console.log(newMemberData)
         const token = localStorage.getItem("token")
         const serverResponse = await axios.post(`${url}/admin/addMember`,
             newMemberData,

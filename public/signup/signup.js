@@ -18,7 +18,6 @@ async function onSubmit(e) {
             password: passwordInput.value
         }
         const serverResponse = await axios.post(`${url}/signup`, userData);
-        console.log(serverResponse)
         if (serverResponse.data.status === "success") {
             updateDom(serverResponse.data.message)
             // setTimeout(() => {

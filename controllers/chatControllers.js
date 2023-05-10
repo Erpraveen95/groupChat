@@ -18,9 +18,7 @@ exports.postChat = async (req, res) => {
 exports.fetchChat = async (req, res) => {
     try {
         const lastChatId = +req.params.lastId
-        //console.log("this is last chat i backend", lastChatId)
         const chat = await Message.findAll({ where: { id: { [Op.gt]: lastChatId } } })
-        //console.log(chat, "this is chat")
         if (chat.length == 0) {
             return res.status(200).json({ message: "chat up to date", chat: [] })
         }

@@ -65,11 +65,6 @@ async function displayGroupOnLoad() {
 
 groupList.addEventListener("click", (e) => {
     let groupId;
-    //console.log(e.target.id)
-    // let previntervalId = localStorage.getItem("intervalId");
-    // if (previntervalId) {
-    //     clearInterval(previntervalId);
-    // }
     if (e.target.nodeName == "BUTTON") {
         groupId = e.target.parentElement.id;
         return deleteGroup(groupId);
@@ -124,8 +119,11 @@ function updateChatList(message, from) {
         audio.play()
     }
     chatList.appendChild(newMessageEl)
-    chatList.scrollTop = chatList.scrollHeight - chatList.clientHeight;
-
+    if (chatList.scrollHeight > chatList.clientHeight) {
+        chatList.scrollTop = chatList.scrollHeight - chatList.clientHeight;
+    } else {
+        chatList.scrollTop = 0;
+    }
 }
 
 async function fetchAndShowChat(groupId) {
@@ -201,7 +199,6 @@ async function fetchAndShowMembers(activeGroup) {
         const getMembersResponse = await axios.get(`${url}/admin/getAllMembers/${activeGroup}`,
             { headers: { "Authorization": token } }
         )
-        // console.log(getMembersResponse.data.members)
         updateMemberList(getMembersResponse.data.members);
     } catch (error) {
         console.log(err)
@@ -233,7 +230,6 @@ function handleMembers(e) {
     let name = e.target.className;
     let token = localStorage.getItem("token");
     let groupID = localStorage.getItem("activeGroup");
-    // console.log(name, id);
     if (name == "makeadminbtn") {
         makeAdmin(userId, token, groupID);
     }

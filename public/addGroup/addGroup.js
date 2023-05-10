@@ -22,7 +22,6 @@ async function addGroup(e) {
         const serverResponse = await axios.post(`${url}/groups/addgroup`,
             groupDetails,
             { headers: { "Authorization": token } })
-        console.log(serverResponse)
         if (serverResponse.status === 200) {
             alert("Create Group Success")
             window.location.href = "../main/main.html"
