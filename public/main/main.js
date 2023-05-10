@@ -15,7 +15,7 @@ const chatbox = document.querySelector('.chatbox');
 const groupContainer = document.querySelector('.group-container');
 
 const audio = new Audio("ios.mp3")
-const socket = io("https://whatschatappa.onrender.com/")
+const socket = io("https://whatschatappa.onrender.com")
 socket.on("connect", () => {
     console.log(`youre connected with id ${socket.id}`)
 })
