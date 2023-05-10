@@ -4,17 +4,18 @@ const passwordInput = document.getElementById('password')
 const form = document.getElementById('login-form')
 const msg = document.getElementById("msg-new")
 const response = document.getElementById("response")
-const url = "https://whatschatappa.onrender.com"
+const url = "https://whatschatappa.onrender.com/"
 
+const token = localStorage.getItem("token")
+if (token) {
+    window.location.href = "../main/main.html"
+}
 form.addEventListener("submit", login)
 
 async function login(e) {
     try {
         e.preventDefault();
-        const token = localStorage.getItem("token")
-        if (token) {
-            window.location.href = "../main/main.html"
-        }
+
         const loginCredentials = {
             email: emailInput.value,
             password: passwordInput.value

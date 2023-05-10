@@ -65,9 +65,12 @@ app.use((req, res) => {
 })
 io.on('connection', socket => {
     console.log('a user connected')
-
+    socket.on("join-room", (room) => {
+        console.log("this is room ", room)
+        socket.join(room)
+    })
     socket.on('new-chat', message => {
-        socket.broadcast.emit('recieve', message)
+        socket.to(message.room).emit('recieve', message)
     })
 })
 
