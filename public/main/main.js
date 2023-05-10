@@ -1,4 +1,4 @@
-const url = "https://whatschatappa.onrender.com/"
+const url = "https://whatschatappa.onrender.com"
 const form = document.getElementById("form")
 const messageInput = document.getElementById("new-message")
 const chatList = document.querySelector('.chatbox-messages')
@@ -15,7 +15,7 @@ const chatbox = document.querySelector('.chatbox');
 const groupContainer = document.querySelector('.group-container');
 
 const audio = new Audio("ios.mp3")
-const socket = io("https://whatschatappa.onrender.com")
+const socket = io(`${url}`)
 socket.on("connect", () => {
     console.log(`youre connected with id ${socket.id}`)
 })
