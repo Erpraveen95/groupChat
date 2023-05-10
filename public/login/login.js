@@ -9,24 +9,28 @@ form.addEventListener("submit", login)
 async function login(e) {
     try {
         e.preventDefault();
+        const token = localStorage.getItem("token")
+        if (token) {
+            window.location.href = "../main/main.html"
+        }
         const loginCredentials = {
             email: emailInput.value,
             password: passwordInput.value
         }
-        const serverResponse = await axios.post("http://65.1.130.175:3000/login", loginCredentials)
+        const serverResponse = await axios.post("http://localhost:3000/login", loginCredentials)
         updateDom(serverResponse.data.message)
         if (serverResponse.data.success === "true") {
             localStorage.setItem("token", serverResponse.data.token)
             localStorage.setItem("username", serverResponse.data.username)
-            setTimeout(() => {
-                window.location.href = "main.html"
-            }, 2000)
+            //setTimeout(() => {
+            window.location.href = "../main/main.html"
+            //}, 2000)
         }
     } catch (error) {
         console.log(error.response.data.message)
         updateDom(error.response.data.message)
         const forgotPasswordLink = document.createElement("a")
-        forgotPasswordLink.href = "forgotPassword.html";
+        forgotPasswordLink.href = "../forgotpassword/forgotPassword.html";
         forgotPasswordLink.textContent = "Forgot Password";
         response.appendChild(forgotPasswordLink);
     }

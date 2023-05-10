@@ -39,7 +39,7 @@ body {
 
 .chatbox-messages {
   height: calc(100% - 70px);
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   padding: 5px;
@@ -273,7 +273,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .admin {
   color: red;

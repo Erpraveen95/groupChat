@@ -5,7 +5,7 @@ const memberEmails = document.getElementById("group-members")
 const closeBtn = document.getElementById("close-btn")
 
 closeBtn.addEventListener("click", () => {
-    window.location.href = "main.html"
+    window.location.href = "../main/main.html"
 })
 
 form.addEventListener("submit", addGroup)
@@ -18,13 +18,13 @@ async function addGroup(e) {
             description: description.value
         }
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://65.1.130.175:3000/groups/addgroup",
+        const serverResponse = await axios.post("http://localhost:3000/groups/addgroup",
             groupDetails,
             { headers: { "Authorization": token } })
         console.log(serverResponse)
         if (serverResponse.status === 200) {
             alert("Create Group Success")
-            window.location.href = "main.html"
+            window.location.href = "../main/main.html"
         }
     } catch (error) {
         console.log(error)

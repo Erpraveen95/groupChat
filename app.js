@@ -3,10 +3,25 @@ const cors = require('cors')
 const bodyParser = require("body-parser")
 require('dotenv').config()
 const path = require("path")
-const app = express()
+const http = require('http')
+const socketIO = require('socket.io')
 
+
+const app = express()
 app.use(cors())
 app.use(bodyParser.json())
+
+const server = http.createServer(app)
+const io = socketIO(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type'],
+        credentials: true
+    }
+})
+
+
 const sequelize = require("./util/database")
 
 const User = require("./models/user")
@@ -37,17 +52,34 @@ app.use("/chat", chatRoutes)
 app.use("/groups", groupRoutes)
 app.use(adminRoutes)
 
+// app.use((req, res) => {
+//     console.log(req.url)
+//     res.sendFile(path.join(__dirname, `public/html/${req.url}`))
+// })
 app.use((req, res) => {
-    console.log(req.url)
-    res.sendFile(path.join(__dirname, `public/html/${req.url}`))
+    let url = req.url
+    res.header('Content-Security-Policy', "img-src 'self'");
+    if (url == "/") {
+        url = "signup.html"
+    }
+    res.sendFile(path.join(__dirname, `public/${url}`))
 })
+io.on('connection', socket => {
+    console.log('a user connected')
+
+    socket.on('new-chat', message => {
+        socket.broadcast.emit('recieve', message)
+    })
+})
+
 
 sequelize
     .sync()
     // .sync({ force: true })
     .then(() => {
         console.log("db connected")
-        app.listen(process.env.PORT, () => {
-            console.log(`server started at port ${process.env.PORT}`)
+        server.listen(process.env.PORT, () => {
+            console.log(`server started on port ${process.env.PORT}`)
         })
     })
+

@@ -9,7 +9,7 @@ exports.postChat = async (req, res) => {
             return res.status(401).json({ message: "invalid message", success: "false" })
         }
         const newMessage = await user.createMessage({ message: message, groupId: groupId, from: req.user.name })
-        res.status(200).json({ success: "true", name: user.name, message: newMessage.message })
+        res.status(200).json({ success: "true", name: user.name, message: newMessage.message, })
     } catch (error) {
         res.status(500).json({ success: "false", error })
     }

@@ -3,7 +3,7 @@ const emailInput = document.getElementById("email")
 const closeBtn = document.getElementById("close-btn")
 
 closeBtn.addEventListener("click", () => {
-    window.location.href = "main.html"
+    window.location.href = "../main/main.html"
 })
 
 form.addEventListener("submit", addMember)
@@ -18,11 +18,11 @@ async function addMember(e) {
         }
         console.log(newMemberData)
         const token = localStorage.getItem("token")
-        const serverResponse = await axios.post("http://65.1.130.175:3000/admin/addMember",
+        const serverResponse = await axios.post("http://localhost:3000/admin/addMember",
             newMemberData,
             { headers: { "Authorization": token } })
         if (serverResponse.status === 200) {
-            window.location.href = "main.html"
+            window.location.href = "../main/main.html"
         }
     } catch (error) {
         console.log(error)
