@@ -27,3 +27,34 @@ exports.fetchChat = async (req, res) => {
         res.status(500).json({ success: "false", message: "chat fetch error" })
     }
 }
+
+exports.archiveChat = async () => {
+    // Calculate the date 1 day ago
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Find all the messages in the Chat table that are 1 day old
+    const messages = await Message.findAll({
+        where: {
+            createdAt: {
+                [Op.lt]: yesterday
+            }
+        }
+    });
+
+    // Move the messages to the ArchivedChat table
+    await ArchivedChat.bulkCreate(messages.map(m => ({
+        message: m.message,
+        from: m.from,
+        groupId: m.groupId
+    })));
+
+    // Delete the messages from the Chat table
+    await Message.destroy({
+        where: {
+            createdAt: {
+                [Op.lt]: yesterday
+            }
+        }
+    });
+}

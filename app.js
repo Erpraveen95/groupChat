@@ -3,10 +3,11 @@ const cors = require('cors')
 const bodyParser = require("body-parser")
 require('dotenv').config()
 const path = require("path")
-const http = require('http')
-const socketIO = require('socket.io')
 const morgan = require("morgan")
 const fs = require("fs")
+const cron = require("node-cron")
+const http = require('http')
+const socketIO = require('socket.io')
 
 const app = express()
 app.use(cors())
@@ -66,14 +67,15 @@ app.use((req, res) => {
 io.on('connection', socket => {
     console.log('a user connected')
     socket.on("join-room", (room) => {
-        console.log("this is room ", room)
         socket.join(room)
     })
     socket.on('new-chat', message => {
         socket.to(message.room).emit('recieve', message)
     })
 })
+const chatController = require("./controllers/chatControllers")
 
+cron.schedule('0 0 * * *', chatController.archiveChat)
 
 sequelize
     .sync()
