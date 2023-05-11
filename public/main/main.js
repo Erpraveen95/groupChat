@@ -17,7 +17,7 @@ const groupContainer = document.querySelector('.group-container');
 const audio = new Audio("ios.mp3")
 const socket = io(`${url}`)
 socket.on("connect", () => {
-    console.log(`youre connected with id ${socket.id}`)
+    console.log(`youre connected with id`)
 })
 socket.on("recieve", (message) => {
     updateChatList(message.message, message.name)
