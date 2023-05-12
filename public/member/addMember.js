@@ -1,7 +1,7 @@
 const form = document.getElementById("my-form")
 const emailInput = document.getElementById("email")
 const closeBtn = document.getElementById("close-btn")
-const url = "https://whatschatappa.onrender.com"
+const url = "https://44.226.145.213"
 closeBtn.addEventListener("click", () => {
     window.location.href = "../main/main.html"
 })

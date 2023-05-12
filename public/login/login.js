@@ -4,7 +4,7 @@ const passwordInput = document.getElementById('password')
 const form = document.getElementById('login-form')
 const msg = document.getElementById("msg-new")
 const response = document.getElementById("response")
-const url = "https://whatschatappa.onrender.com"
+const url = "https://44.226.145.213"
 
 const token = localStorage.getItem("token")
 if (token) {
