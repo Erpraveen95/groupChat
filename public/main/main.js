@@ -1,4 +1,4 @@
-const url = "https://44.226.145.213"
+const url = "https://whatschatappa.onrender.com"
 const form = document.getElementById("form")
 const messageInput = document.getElementById("new-message")
 const chatList = document.querySelector('.chatbox-messages')

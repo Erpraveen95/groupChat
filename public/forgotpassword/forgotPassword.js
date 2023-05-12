@@ -1,6 +1,6 @@
 const form = document.getElementById("forgotPassword")
 const email = document.getElementById("email")
-const url = "https://44.226.145.213"
+const url = "https://whatschatappa.onrender.com"
 
 form.addEventListener("submit", resetPassword)
 
