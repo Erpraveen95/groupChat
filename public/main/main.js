@@ -1,4 +1,4 @@
-const url = "https://whatschatappa.onrender.com"
+const url = "https://whatschat-xtaj.onrender.com"
 const form = document.getElementById("form")
 const messageInput = document.getElementById("new-message")
 const chatList = document.querySelector('.chatbox-messages')
@@ -299,5 +299,6 @@ logOut.addEventListener("click", () => {
     localStorage.removeItem("messages")
     localStorage.removeItem("activeGroup")
     localStorage.removeItem("username");
+    socket.disconnect()
     window.location.href = "../login/loginPage.html"
 })
